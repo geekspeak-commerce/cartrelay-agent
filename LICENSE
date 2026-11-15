@@ -1,0 +1,38 @@
+MIT License — newly authored package files only
+
+Copyright (c) 2026 CartRelay contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of the newly authored package software and associated documentation files
+(the "Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Scope and exclusions
+
+This MIT grant covers the newly authored adapters, declarations, request-schema
+module, entry point, starter, portable skill and package documentation only.
+The pre-existing approved client lib/cartrelay-discovery.mjs is copied unchanged
+with the CartRelay owner's explicit authorization for PUBLIC source-free package
+redistribution. This package does not relicense pre-existing software; the owner
+must confirm its intended client license before registry publication. Third-party
+framework dependencies retain their separate licenses and are not bundled.
+
+No source/retailer/catalogue data, product records, private grocery-test material,
+merchant artwork, provider feeds, credentials or canonical server code is granted
+or relicensed here. Authorized discovery response data remains subject to existing
+source permissions, attribution, notices and restrictions. Software installation
+is not an anonymous product-access grant, source permission, bulk-export right,
+shopping approval or permission to create credentials.

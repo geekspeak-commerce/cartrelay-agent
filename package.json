@@ -1,0 +1,39 @@
+{
+  "name": "@cartrelay/agent",
+  "version": "0.1.0",
+  "description": "Source-free, authenticated CartRelay discovery client with optional agent-framework adapters.",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "license": "SEE LICENSE IN LICENSE",
+  "sideEffects": false,
+  "main": "./lib/index.mjs",
+  "types": "./lib/index.d.mts",
+  "exports": {
+    ".": { "types": "./lib/index.d.mts", "import": "./lib/index.mjs" },
+    "./langchain": { "types": "./lib/langchain.d.mts", "import": "./lib/langchain.mjs" },
+    "./llamaindex": { "types": "./lib/llamaindex.d.mts", "import": "./lib/llamaindex.mjs" },
+    "./starter": { "types": "./starter/discovery.d.mts", "import": "./starter/discovery.mjs" },
+    "./skill": "./skill/cartrelay-discovery/SKILL.md",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.mjs", "lib/index.d.mts",
+    "lib/cartrelay-discovery.mjs", "lib/cartrelay-discovery.d.mts",
+    "lib/schema.mjs", "lib/schema.d.mts",
+    "lib/langchain.mjs", "lib/langchain.d.mts",
+    "lib/llamaindex.mjs", "lib/llamaindex.d.mts",
+    "starter/discovery.mjs", "starter/discovery.d.mts",
+    "skill/cartrelay-discovery/SKILL.md",
+    "skill/cartrelay-discovery/references/handoff.md",
+    "README.md", "LICENSE", "NOTICE.md"
+  ],
+  "peerDependencies": {
+    "@langchain/core": "1.4.1",
+    "@llamaindex/core": "0.6.23"
+  },
+  "peerDependenciesMeta": {
+    "@langchain/core": { "optional": true },
+    "@llamaindex/core": { "optional": true }
+  },
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
+}

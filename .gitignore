@@ -1,0 +1,6 @@
+node_modules/
+*.tgz
+verification/*-results.txt
+verification/pack-*.json
+verification/artifacts/
+verification/unapproved-probe/
