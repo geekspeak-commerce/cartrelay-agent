@@ -1,39 +1,111 @@
 {
   "name": "@cartrelay/agent",
-  "version": "0.1.0",
-  "description": "Source-free, authenticated CartRelay discovery client with optional agent-framework adapters.",
+  "version": "0.1.1",
+  "description": "Source-free authenticated CartRelay discovery with optional framework adapters and MCP OAuth renewal.",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
   "license": "SEE LICENSE IN LICENSE",
   "sideEffects": false,
   "main": "./lib/index.mjs",
   "types": "./lib/index.d.mts",
   "exports": {
-    ".": { "types": "./lib/index.d.mts", "import": "./lib/index.mjs" },
-    "./langchain": { "types": "./lib/langchain.d.mts", "import": "./lib/langchain.mjs" },
-    "./llamaindex": { "types": "./lib/llamaindex.d.mts", "import": "./lib/llamaindex.mjs" },
-    "./starter": { "types": "./starter/discovery.d.mts", "import": "./starter/discovery.mjs" },
+    ".": {
+      "types": "./lib/index.d.mts",
+      "import": "./lib/index.mjs"
+    },
+    "./langchain": {
+      "types": "./lib/langchain.d.mts",
+      "import": "./lib/langchain.mjs"
+    },
+    "./llamaindex": {
+      "types": "./lib/llamaindex.d.mts",
+      "import": "./lib/llamaindex.mjs"
+    },
+    "./langchain-mcp": {
+      "types": "./lib/langchain-mcp.d.ts",
+      "import": "./lib/langchain-mcp.mjs"
+    },
+    "./oauth": {
+      "types": "./lib/oauth.d.ts",
+      "import": "./lib/oauth.mjs"
+    },
+    "./starter": {
+      "types": "./starter/discovery.d.mts",
+      "import": "./starter/discovery.mjs"
+    },
     "./skill": "./skill/cartrelay-discovery/SKILL.md",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./credential-store": {
+      "types": "./lib/credential-store.d.ts",
+      "import": "./lib/credential-store.mjs"
+    }
   },
   "files": [
-    "lib/index.mjs", "lib/index.d.mts",
-    "lib/cartrelay-discovery.mjs", "lib/cartrelay-discovery.d.mts",
-    "lib/schema.mjs", "lib/schema.d.mts",
-    "lib/langchain.mjs", "lib/langchain.d.mts",
-    "lib/llamaindex.mjs", "lib/llamaindex.d.mts",
-    "starter/discovery.mjs", "starter/discovery.d.mts",
+    "lib/index.mjs",
+    "lib/index.d.mts",
+    "lib/cartrelay-discovery.mjs",
+    "lib/cartrelay-discovery.d.mts",
+    "lib/schema.mjs",
+    "lib/schema.d.mts",
+    "lib/langchain.mjs",
+    "lib/langchain.d.mts",
+    "lib/llamaindex.mjs",
+    "lib/llamaindex.d.mts",
+    "lib/langchain-mcp.mjs",
+    "lib/langchain-mcp.d.ts",
+    "lib/oauth.mjs",
+    "lib/oauth.d.ts",
+    "lib/mcp-errors.mjs",
+    "lib/reference-client.mjs",
+    "examples/search.mjs",
+    "docs/oauth-mcp.md",
+    "starter/discovery.mjs",
+    "starter/discovery.d.mts",
     "skill/cartrelay-discovery/SKILL.md",
     "skill/cartrelay-discovery/references/handoff.md",
-    "README.md", "LICENSE", "NOTICE.md"
+    "README.md",
+    "LICENSE",
+    "NOTICE.md",
+    "lib/credential-store.mjs",
+    "lib/credential-store.d.ts",
+    "examples/login.mjs",
+    "lib/mcp-origin.mjs"
   ],
+  "devDependencies": {
+    "@langchain/core": "1.5.1",
+    "@llamaindex/core": "0.6.23",
+    "@cfworker/json-schema": "4.1.4",
+    "@modelcontextprotocol/client": "2.4.0",
+    "zod": "4.6.7"
+  },
   "peerDependencies": {
-    "@langchain/core": "1.4.1",
-    "@llamaindex/core": "0.6.23"
+    "@langchain/core": "^1.4.1",
+    "@llamaindex/core": "0.6.23",
+    "@modelcontextprotocol/client": "2.4.0",
+    "zod": "4.6.7"
   },
   "peerDependenciesMeta": {
-    "@langchain/core": { "optional": true },
-    "@llamaindex/core": { "optional": true }
+    "@langchain/core": {
+      "optional": true
+    },
+    "@llamaindex/core": {
+      "optional": true
+    },
+    "@modelcontextprotocol/client": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
-  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
+  "scripts": {
+    "test": "node --test verification/offline.test.mjs verification/oauth-mcp.test.mjs"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

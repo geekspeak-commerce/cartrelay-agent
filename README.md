@@ -1,15 +1,15 @@
 # @cartrelay/agent
 
-A public, source-free, installable JavaScript package for **authenticated CartRelay discovery**. The core has zero runtime dependencies and reuses CartRelay's approved released client unchanged. It contains no canonical server code, catalogue/source assets, product records or credentials. Public package installation is not anonymous product access, a public product index or redistribution permission.
+A public, source-free, installable JavaScript package for **authenticated CartRelay discovery**. The REST core still imports no framework or MCP dependencies and reuses CartRelay's approved released client unchanged. The additive 0.1.1 MCP entry requires optional exact MCP SDK 2.4.0 and Zod 4.6.7 peers; the package retains zero mandatory runtime dependencies. The package contains no canonical server code, catalogue/source assets, product records or credentials. Public package installation is not anonymous product access, a public product index or redistribution permission.
 
-The authorized distribution is the source-only GitHub repository and pinned release artifact. Npm registry publication is not available and is not claimed. Use the release URL only once v0.1.0 appears in the repository's Releases; the local reviewed tarball is also installable. Node.js 22+ and ESM are required. There are no install scripts or build step.
+The authorized distribution is the source-only GitHub repository and pinned release artifact. Npm registry publication is not available and is not claimed. Use the release URL only once v0.1.1 appears in the repository's Releases; the local reviewed tarball is also installable. Node.js 22+ and ESM are required. There are no install scripts or build step.
 
 ```sh
 # Local source-free artifact, after npm pack in this package directory:
-npm install ./cartrelay-agent-0.1.0.tgz
+npm install ./cartrelay-agent-0.1.1.tgz
 
 # Pinned source-free GitHub release artifact:
-npm install https://github.com/geekspeak-commerce/cartrelay-agent/releases/download/v0.1.0/cartrelay-agent-0.1.0.tgz
+npm install https://github.com/geekspeak-commerce/cartrelay-agent/releases/download/v0.1.1/cartrelay-agent-0.1.1.tgz
 
 # Optional LangChain peer after installing the artifact:
 npm install @langchain/core@1.4.1
@@ -101,13 +101,47 @@ All fixtures are synthetic and bounded. Tests and verification material are excl
 
 ```sh
 # From this package directory; no root manifest/lock changes:
-npm install --no-save --package-lock=false --ignore-scripts @langchain/core@1.4.1 @llamaindex/core@0.6.23 @cfworker/json-schema@4.1.4
-node --test verification/offline.test.mjs
-npm pack --dry-run --json --ignore-scripts
-npm pack --json --ignore-scripts
+pnpm install --frozen-lockfile
+pnpm test
+npm pack --dry-run --json
 
 # From the private development repository root:
 ./node_modules/.bin/vitest run tests/cartrelay-agent-package.test.ts
 ```
 
-Before publication, the owner must review the tarball/public-repository allowlist and licenses, choose the supported destinations, confirm npm scope ownership/authentication and version availability, then explicitly authorize publication. No publishing or GitHub action is performed here. See `NOTICE.md` for approved-client provenance and verified official API references, and `LICENSE` for the software-only licensing boundary.
+Before publication, the owner must review the tarball/public-repository allowlist and licenses, choose the supported destinations, confirm npm scope ownership/authentication and version availability, then explicitly authorize publication. Source-only GitHub release publication is owner-authorized; npm publication and framework-listing acceptance are separate, uncompleted gates. See `NOTICE.md` for approved-client provenance and verified official API references, and `LICENSE` for the software-only licensing boundary.
+
+## Additive 0.1.1: native MCP login, renewal and LangChain search
+
+Version 0.1.0 already provided installable REST LangChain and LlamaIndex adapters. The 0.1.1 source-only release adds separate `@cartrelay/agent/langchain-mcp`, `/oauth` and `/credential-store` exports; the older adapters above are unchanged. This is not npm registry publication or framework-directory acceptance.
+
+Run login on your own POSIX computer, in your own terminal and browser, using the 0.1.1 source or an owner-approved 0.1.1 artifact. Complete CartRelay's real sign-in and explicit read-only acceptance. Never paste access tokens into a prompt. The credential file must live outside any repository or shared host, in a private 0700 directory with a 0600 file.
+
+```sh
+# Install in your application's directory:
+npm install https://github.com/geekspeak-commerce/cartrelay-agent/releases/download/v0.1.1/cartrelay-agent-0.1.1.tgz @langchain/core@1.5.1 @modelcontextprotocol/client@2.4.0 zod@4.6.7
+# In your own private terminal/browser (not a shared server):
+export CARTRELAY_CREDENTIAL_FILE="$HOME/.cartrelay/credentials.json"
+node node_modules/@cartrelay/agent/examples/login.mjs
+# Later, for an explicit shopper request (prints only a safe product count):
+node node_modules/@cartrelay/agent/examples/search.mjs 'water bottle' CA
+```
+
+```js
+import { createLangChainSearchTool } from '@cartrelay/agent/langchain-mcp';
+import { createOAuthCredentialProvider } from '@cartrelay/agent/oauth';
+import { createCredentialFileStore } from '@cartrelay/agent/credential-store';
+
+export async function prepareMcpSearch(privateCredentialFilename) {
+  const store = createCredentialFileStore(privateCredentialFilename);
+  const credentials = createOAuthCredentialProvider({
+    loadTokens: store.loadTokens,
+    saveTokens: store.saveTokens,
+  });
+  return createLangChainSearchTool({ credentialProvider: credentials });
+}
+```
+
+Construction performs no credential or network I/O. The genuine LangChain search tool accepts only `{query,country?:'CA'|'US'}`, searches with limit 4, and returns actual structured source data transiently. The helper renews accepted public-client refresh grants near expiry, singleflight within one process, and saves rotation before using new access tokens. It never blindly retries a 401, creates a cart, records consent, hands off or purchases. Local storage is POSIX/single-process; Windows and hosted services should provide their own secure load/save callbacks and multi-process locking.
+
+Disable LangChain/LangSmith tracing before importing a model and remove host callbacks/exporters. **No automatic privacy is claimed:** framework/model tracing can capture query and product outputs, and invalid-input framework exceptions must be redacted by the host. The new search example does not construct a model and never prints product records, queries or credentials. See [MCP OAuth contract and safeguards](docs/oauth-mcp.md) for the exact store shape, errors, expiry rules, scope requirements and limitations. Real production login and merchant access still require the actual user and approved service configuration.

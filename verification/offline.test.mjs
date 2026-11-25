@@ -172,11 +172,12 @@ test('framework JSON schemas reject extra fields and encode explicit source-safe
   assert.equal(schema.properties.query['x-cartrelay-utf16-maxLength'], 300);
   assert.equal(validate({ query: 'synthetic mouse', context: { version: 2, country: 'JP', currency: 'JPY' } }, schema).valid, true);
 });
-
 test('npm dry-run and actual tarball contain exactly the explicit source-free files, no injected files', async () => {
   const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
-  assert.equal(manifest.name, '@cartrelay/agent'); assert.equal(manifest.dependencies, undefined); assert.equal(manifest.scripts, undefined);
-  assert.deepEqual(Object.keys(manifest.peerDependenciesMeta).sort(), ['@langchain/core', '@llamaindex/core'].sort());
+  assert.equal(manifest.name, '@cartrelay/agent');
+  assert.equal(manifest.dependencies, undefined);
+  assert.deepEqual(Object.keys(manifest.scripts), ['test']);
+  assert.deepEqual(Object.keys(manifest.peerDependenciesMeta).sort(), ['@langchain/core', '@llamaindex/core', '@modelcontextprotocol/client', 'zod'].sort());
   const permitted = new Set([...manifest.files, 'package.json']);
   const dir = await mkdtemp(join(tmpdir(), 'cartrelay-agent-pack-'));
   const probe = join(root, 'verification', 'unapproved-probe');
